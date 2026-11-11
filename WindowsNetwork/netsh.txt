@@ -1,0 +1,28 @@
+netsh interface ip set address "Local Area Connection" static 192.168.1.24 255.255.255.0 192.168.1.253 1
+netsh interface ip set dns "Local Area Connection" static 64.42.64.5
+netsh interface ip add dns "Local Area Connection" static 64.42.65.1
+
+netsh interface ip set address "Local Area Connection" dhcp
+netsh interface ip set dns "Local Area Connection" source=dhcp
+
+netsh interface ip set address name="Wireless Network Connection" source=static addr=192.168.1.30 mask=255.255.255.0 gateway=192.168.1.19 gwmetric=0
+netsh interface ip set dns name="Wireless Network Connection" source=static addr=208.59.247.45 register=PRIMARY
+netsh interface ip add dns name="Wireless Network Connection" addr=208.59.247.46 index=2
+
+
+set address [name=]InterfaceName [source=]{dhcp | static [addr=]IPAddress [mask=]SubnetMask [gateway=]{none | DefaultGateway [[gwmetric=]GatewayMetric]}}
+set dns [name=]InterfaceName [source=]{dhcp | static [addr=]{DNSAddress | none}} [[ddns=]{disabled | enabled}] [[suffix=]{interface | primary}]
+add dns [name=]InterfaceName [addr=] DNSAddress [[index=]DNSIndex]
+set address name="Local Area Connection" source=static addr=10.0.5.99 mask=255.255.255.0 gateway=10.0.5.1
+
+netsh interface set interface "Local Area Connection" enabled
+netsh interface set interface "Local Area Connection" disabled
+
+;run from a root shell
+;works on WinXP, buggy on Win7
+netsh -c interface dump > config.txt
+
+netsh interface ipv4 set address name="Ethernet" static 192.168.1.5 255.255.255.0 192.168.1.1
+netsh interface ipv4 set address name="Ethernet" source=dhcp
+netsh interface ipv4 set dns name="Ethernet" source=static addr=213.177.96.201 register=PRIMARY
+netsh interface ipv4 add dns name="Ethernet" addr=213.177.97.201 index=2
